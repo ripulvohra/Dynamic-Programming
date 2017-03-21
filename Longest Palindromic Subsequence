@@ -1,0 +1,61 @@
+#include<bits/stdc++.h>
+using namespace std;
+queue<char> q;
+stack<char> s;
+int lps(string a,int s,int e)
+{
+    if(s>e) return 0;
+    if(s==e) return 1;
+    
+    
+    if(a[s]==a[e]) return 2+lps(a,s+1,e-1);
+    else return max(lps(a,s,e-1),lps(a,s+1,e));
+}
+int lpsdp(string a,int l)
+{
+    int t[l][l];
+    for(int i=0;i<l;i++)
+    {
+        t[i][i]=1;}
+    int k;
+    for(int j=2;j<=l;j++)
+    {
+        for(int i=0;i<l-j+1;i++)
+    {
+        k=i+j-1;
+      if(a[i]==a[k]&&j==2) t[i][k]=2;
+      else  if(a[i]==a[k]) t[i][k]=2+t[i+1][k-1];
+        else t[i][k]=max(t[i][k-1],t[i+1][k]);
+    }
+        
+    }
+
+
+int i=0; k=l-1;
+while(1)
+{
+if(i==k){ s.push(a[k]); break;}
+
+else if(t[i][k]==t[i+1][k-1]+2&&a[i]==a[k]&&i!=k) {q.push(a[i]); s.push(a[k]); i++; k--;}
+
+else if(t[i][k]==t[i][k-1]) k--;
+else i++;
+}
+
+
+return t[0][l-1];
+    
+}
+int main()
+{
+  string a;
+  cin>>a;
+  int l=a.length();
+  cout<<lps(a,0,l-1)<<endl;
+ cout<<lpsdp(a,l)<<endl; 
+
+    while(!q.empty()){ cout<<q.front()<<" "; q.pop();}
+    while(!s.empty()){ cout<<s.top()<<" "; s.pop();}
+}
+
+   
