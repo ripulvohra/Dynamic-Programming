@@ -1,0 +1,33 @@
+#include <bits/stdc++.h>
+using namespace std;
+int main() {
+	
+	int dp[51][11];
+	
+	for(int i=1;i<=50;i++)
+	{
+	    dp[i][1]=i;
+	    dp[i][0]=0;
+	}
+	for(int i=1;i<=10;i++)
+	{
+	    dp[1][i]=1;
+	    dp[0][i]=0;
+	}
+	for(int i=2;i<=50;i++)
+	{
+	    for(int j=2;j<=10;j++)
+	    {
+	        dp[i][j]=INT_MAX;
+	        for(int x=1;x<=i;x++)
+	        dp[i][j]=  min(dp[i][j],max(dp[x-1][j-1],dp[i-x][j]) +1);
+	    }
+	}
+	
+	int t; cin>>t;
+	int n,e;
+	while(t--){
+	
+	cin>>e>>n;
+	cout<<dp[n][e]<<endl;}
+}
